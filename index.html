@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8-я комендантская рота - Штаб</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Philosopher:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Основные стили для фиксированного футера */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Убираем горизонтальный скролл */
+        }
+        
+        body {
+            background-image: url('./main.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'PT Sans', sans-serif;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Новый эффект: наложение текстуры военной карты */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png'); /* Бесплатная текстура карты */
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 20, 10, 0.75), rgba(30, 40, 30, 0.85));
+            z-index: -1;
+        }
+        
+        /* Шапка в стиле военной таблички */
+        .nav-header {
+            background-color: rgba(20, 30, 20, 0.9);
+            border-bottom: 3px solid #8B4513; /* Коричневый, как деревянная рамка */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            font-family: 'PT Sans', sans-serif;
+            font-weight: bold;
+            position: relative;
+            flex-shrink: 0; /* Не сжимается при flexbox */
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .nav-header::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .nav-star {
+            color: #C19A6B;
+            font-size: 28px;
+            margin-right: 25px;
+            text-shadow: 0 0 5px rgba(193, 154, 107, 0.5);
+            flex-shrink: 0;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            align-items: stretch; /* Важно: растягиваем все элементы по высоте */
+            height: 100%;
+            flex: 1;
+        }
+        
+        /* Общие стили для всех ссылок - теперь они одинаковой высоты */
+        .nav-link {
+            color: #e8e1d4;
+            text-decoration: none;
+            padding: 18px 15px;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center; /* Центрируем текст по вертикали */
+            height: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Специальный класс для выравнивания выпадающих меню */
+        .nav-dropdown > .nav-link {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(139, 69, 19, 0.3);
+            color: #FFD700;
+        }
+        
+        /* Стрелка для выпадающих меню */
+        .dropdown-arrow {
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+        
+        /* Аккуратные выпадающие меню */
+        .nav-dropdown {
+            position: relative;
+            display: flex;
+            align-items: stretch; /* Растягиваем по высоте родителя */
+            height: 100%;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%; /* Располагаем прямо под ссылкой */
+            left: 0;
+            background-color: rgba(30, 40, 30, 0.95);
+            min-width: 200px;
+            border: 1px solid #5D4037;
+            border-top: none;
+            z-index: 100;
+        }
+        
+        .nav-dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: #e8e1d4;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+            font-size: 0.85rem;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: rgba(139, 69, 19, 0.4);
+            color: #FFD700;
+        }
+        
+        /* Основной контент - теперь он растягивается, выталкивая футер вниз */
+        main {
+            flex: 1 0 auto; /* Растягивается на всё доступное пространство */
+            margin: 40px auto;
+            padding: 30px;
+            max-width: 1200px;
+            width: calc(100% - 40px); /* Учитываем отступы */
+            background-color: rgba(25, 30, 25, 0.7);
+            border: 1px solid #5D4037;
+            border-radius: 0;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        
+        /* Эффект "печати" для заголовка */
+        .title-section {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .title-section::before, .title-section::after {
+            content: "";
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
+        }
+        
+        .title-section::before {
+            top: 0;
+        }
+        
+        .title-section::after {
+            bottom: 0;
+        }
+        
+        .main-title {
+            font-family: 'Philosopher', serif;
+            color: #FFD700;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+        
+        .main-title::after {
+            content: "★";
+            color: #C19A6B;
+            margin-left: 15px;
+            font-size: 2rem;
+        }
+        
+        /* Подвал в стиле штампованной таблички - теперь всегда внизу */
+        .page-footer {
+            background-color: rgba(15, 25, 15, 0.9);
+            border-top: 2px solid #8B4513;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+            flex-shrink: 0; /* Не сжимается */
+            position: relative;
+            width: 100%;
+            margin-top: auto; /* Выталкивается вниз */
+            box-sizing: border-box;
+        }
+        
+        .page-footer::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
+        }
+        
+        /* Контейнер для содержимого футера - ограничивает ширину текста */
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-icon {
+            background-color: rgba(139, 69, 19, 0.3);
+            color: #C19A6B;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        
+        .footer-text {
+            color: #b8b2a7;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-width: 500px;
+        }
+        
+        .footer-right {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            flex: 1;
+            min-width: 300px;
+            color: #a09a8a;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            border-left: 1px solid rgba(139, 69, 19, 0.5);
+            padding-left: 20px;
+        }
+        
+        .footer-mini-logo {
+            height: 45px;
+            opacity: 0.9;
+            filter: sepia(0.3);
+            flex-shrink: 0;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .footer-left, .footer-right {
+                min-width: 100%;
+            }
+            
+            .footer-right {
+                border-left: none;
+                border-top: 1px solid rgba(139, 69, 19, 0.5);
+                padding-left: 0;
+                padding-top: 20px;
+                margin-top: 10px;
+            }
+            
+            .page-footer {
+                padding: 20px;
+            }
+            
+            .footer-container {
+                padding: 0 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav {
+                flex-direction: column;
+                gap: 5px;
+                width: 100%;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-star {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .nav-link, .nav-dropdown {
+                width: 100%;
+                height: auto;
+            }
+            
+            .nav-link {
+                padding: 15px;
+                justify-content: center;
+            }
+            
+            .nav-dropdown > .nav-link {
+                justify-content: center;
+            }
+            
+            .dropdown-content {
+                position: static;
+                width: 100%;
+                display: none;
+                border: none;
+                background-color: rgba(40, 50, 40, 0.95);
+            }
+            
+            .nav-dropdown:hover .dropdown-content {
+                display: block;
+            }
+            
+            main {
+                margin: 20px auto;
+                padding: 20px;
+                width: calc(100% - 20px);
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .footer-left, .footer-right {
+                min-width: 100%;
+            }
+            
+            .footer-text {
+                font-size: 0.8rem;
+            }
+            
+            .footer-right {
+                font-size: 0.75rem;
+            }
+            
+            .footer-container {
+                padding: 0 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.7rem;
+            }
+            
+            .page-footer {
+                padding: 15px 10px;
+            }
+            
+            .footer-left, .footer-right {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .footer-icon {
+                margin-bottom: 5px;
+                margin-top: 0;
+            }
+            
+            .footer-mini-logo {
+                margin-bottom: 5px;
+            }
+            
+            .footer-text, .footer-right {
+                font-size: 0.75rem;
+            }
+            
+            .footer-text {
+                max-width: 100%;
+            }
+            
+            .footer-right {
+                padding-top: 15px;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header class="nav-header">
+        <div class="nav-container">
+            <div class="nav-star">★</div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Главная страница</a>
+                <a href="methodics/charter.html" class="nav-link">УСТАВ ВС СССР</a>
+                <a href="methodics/general.html" class="nav-link">УСТАВ ГКС</a>
+                <a href="methodics/drv.html" class="nav-link">УПК ДРВ</a>
+                <a href="methodics/drv.html" class="nav-link">Уголовный Кодекс ДРВ</a>
+                <a href="methodics/koap.html" class="nav-link">КоАП ДРВ</a>
+                <a href="history.html" class="nav-link">История подразделения</a>
+                <a href="charter.html" class="nav-link">Структура командования</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="title-section">
+            <h1 class="main-title">8-ая комендантская рота</h1>
+        </div>
+        <!-- Здесь можно добавить основной контент страницы -->
+        <!-- Добавьте немного контента для демонстрации -->
+        <div style="color: #e8e1d4; line-height: 1.6; text-align: justify;">
+            <p>8-я комендантская рота — специализированное подразделение, отвечающее за обеспечение порядка и безопасности на вверенной территории. Основные задачи включают охрану объектов, регулирование движения и взаимодействие с местным населением.</p>
+            <p>Солдаты и офицеры роты проходят специальную подготовку, позволяющую эффективно выполнять служебно-боевые задачи в условиях специфического театра военных действий.</p>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-icon">ℹ</div>
+                <div class="footer-text">
+                    Данный сайт является учебным для всех военнослужащих 8-ой комендантской роты<br>
+                    На данный момент информация на сайте - актуальна<br>
+                    Разработан специально для военнослужащих 8-ой комендантской роты.
+                </div>
+            </div>
+        
+            <div class="footer-right">
+                <img src="./mst.png" class="footer-mini-logo" alt="MST">
+                <div>
+                    Представленные уставы не являются реальными нормативными актами и не имеют юридической силы. Это внутриигровой контент проекта "MST | Вьетнам".
+                </div>
+            </div>
+        </div>
+    </footer>    
+</body>
+
+</html>

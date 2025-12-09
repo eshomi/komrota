@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История подразделения | 8-я комендантская рота</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Philosopher:wght@700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        body {
+            background-image: url('./main.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'PT Sans', sans-serif;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+            color: #e8e1d4;
+            line-height: 1.6;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 20, 10, 0.85), rgba(30, 40, 30, 0.9));
+            z-index: -1;
+        }
+        
+        /* Шапка */
+        .nav-header {
+            background-color: rgba(20, 30, 20, 0.95);
+            border-bottom: 3px solid #8B4513;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            font-family: 'PT Sans', sans-serif;
+            font-weight: bold;
+            position: relative;
+            flex-shrink: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .callsign {
+            color: #e74c3c;
+            font-style: italic;
+            font-weight: bold;
+        }
+        
+        .nav-header::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .nav-star {
+            color: #C19A6B;
+            font-size: 28px;
+            margin-right: 25px;
+            text-shadow: 0 0 5px rgba(193, 154, 107, 0.5);
+            flex-shrink: 0;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            align-items: stretch;
+            height: 100%;
+            flex: 1;
+        }
+        
+        .nav-link {
+            color: #e8e1d4;
+            text-decoration: none;
+            padding: 18px 15px;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(139, 69, 19, 0.3);
+            color: #FFD700;
+        }
+        
+        /* Основной контент */
+        main {
+            flex: 1 0 auto;
+            margin: 40px auto;
+            padding: 30px;
+            max-width: 1200px;
+            width: calc(100% - 40px);
+            background-color: rgba(25, 30, 25, 0.85);
+            border: 1px solid #5D4037;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        /* Заголовок страницы */
+        .page-header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #8B4513;
+            position: relative;
+        }
+        
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
+        }
+        
+        .page-title {
+            font-family: 'Philosopher', serif;
+            color: #FFD700;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1.5px;
+            margin: 0 0 10px 0;
+        }
+        
+        .page-subtitle {
+            color: #C19A6B;
+            font-size: 1.2rem;
+            font-style: italic;
+            margin: 0 0 20px 0;
+        }
+        
+        /* Разделы истории */
+        .history-section {
+            margin: 40px 0;
+            padding: 25px;
+            background-color: rgba(30, 40, 30, 0.6);
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(193, 154, 107, 0.3);
+        }
+        
+        .section-icon {
+            background-color: rgba(139, 69, 19, 0.3);
+            color: #FFD700;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Philosopher', serif;
+            font-size: 1.5rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+            border: 1px solid #5D4037;
+        }
+        
+        .section-title {
+            color: #FFD700;
+            font-family: 'Philosopher', serif;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        /* Таблицы */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(20, 25, 20, 0.5);
+            border: 1px solid #5D4037;
+        }
+        
+        .history-table th {
+            background-color: rgba(139, 69, 19, 0.4);
+            color: #FFD700;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #8B4513;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        
+        .history-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+            vertical-align: top;
+        }
+        
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .history-table tr:hover {
+            background-color: rgba(139, 69, 19, 0.1);
+        }
+        
+        /* Блок с лучшими военнослужащими */
+        .best-soldiers {
+            margin: 50px 0;
+        }
+        
+        .soldier-card {
+            display: flex;
+            background-color: rgba(35, 45, 35, 0.7);
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .soldier-photo {
+            width: 250px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .soldier-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .soldier-photo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .soldier-photo::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(20, 30, 20, 0.1), rgba(139, 69, 19, 0.1));
+            z-index: 1;
+        }
+        
+        .soldier-info {
+            flex: 1;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .soldier-info::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 20px;
+            bottom: 20px;
+            width: 3px;
+            background: linear-gradient(to bottom, #8B4513, #C19A6B, #8B4513);
+        }
+        
+        .soldier-name {
+            color: #FFD700;
+            font-family: 'Philosopher', serif;
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+            padding-left: 15px;
+        }
+        
+        .soldier-rank {
+            color: #C19A6B;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 0 20px 0;
+            padding-left: 15px;
+            border-bottom: 1px solid rgba(193, 154, 107, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .soldier-achievements {
+            padding-left: 15px;
+            color: #e8e1d4;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Важные даты и события */
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #8B4513, #C19A6B, #8B4513);
+        }
+        
+        .timeline-event {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .timeline-event::before {
+            content: "";
+            position: absolute;
+            left: -33px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background-color: #8B4513;
+            border: 2px solid #C19A6B;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        .event-year {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .event-title {
+            color: #C19A6B;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Списки */
+        .duties-list {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        
+        .duties-list li {
+            margin: 8px 0;
+            position: relative;
+            padding-left: 5px;
+        }
+        
+        .duties-list li::before {
+            content: "•";
+            position: absolute;
+            left: -15px;
+            color: #C19A6B;
+            font-size: 1.5rem;
+        }
+        
+        /* Финальный блок */
+        .final-note {
+            background-color: rgba(40, 50, 40, 0.7);
+            border-left: 4px solid #8B4513;
+            padding: 25px;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .final-note::before {
+            content: "★";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            color: #C19A6B;
+            font-size: 24px;
+            background-color: rgba(20, 30, 20, 0.9);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid #5D4037;
+        }
+        
+        /* Кнопка "Наверх" */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(139, 69, 19, 0.7);
+            color: #FFD700;
+            border: 1px solid #5D4037;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: none;
+        }
+        
+        .scroll-top:hover {
+            background-color: rgba(139, 69, 19, 0.9);
+            transform: translateY(-5px);
+        }
+        
+        .scroll-top.show {
+            display: flex;
+        }
+        
+        /* Подвал */
+        .page-footer {
+            background-color: rgba(15, 25, 15, 0.9);
+            border-top: 2px solid #8B4513;
+            padding: 20px;
+            flex-shrink: 0;
+            position: relative;
+            width: 100%;
+            margin-top: auto;
+            box-sizing: border-box;
+        }
+        
+        .page-footer::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C19A6B, transparent);
+        }
+        
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-icon {
+            background-color: rgba(139, 69, 19, 0.3);
+            color: #C19A6B;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        
+        .footer-text {
+            color: #b8b2a7;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-width: 500px;
+        }
+        
+        .footer-right {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            flex: 1;
+            min-width: 300px;
+            color: #a09a8a;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            border-left: 1px solid rgba(139, 69, 19, 0.5);
+            padding-left: 20px;
+        }
+        
+        .footer-mini-logo {
+            height: 45px;
+            opacity: 0.9;
+            filter: sepia(0.3);
+            flex-shrink: 0;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .footer-left, .footer-right {
+                max-width: 100%;
+                min-width: 100%;
+            }
+            
+            .footer-right {
+                border-left: none;
+                border-top: 1px solid rgba(139, 69, 19, 0.5);
+                padding-left: 0;
+                padding-top: 20px;
+                margin-top: 10px;
+            }
+            
+            .page-footer {
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav {
+                flex-direction: column;
+                gap: 5px;
+                width: 100%;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-star {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .nav-link {
+                padding: 15px;
+                justify-content: center;
+            }
+            
+            main {
+                margin: 20px auto;
+                padding: 20px;
+                width: calc(100% - 20px);
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .soldier-card {
+                flex-direction: column;
+            }
+            
+            .soldier-photo {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .soldier-info::before {
+                left: 20px;
+                top: 0;
+                width: calc(100% - 40px);
+                height: 3px;
+                background: linear-gradient(to right, #8B4513, #C19A6B, #8B4513);
+            }
+            
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .scroll-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .footer-left, .footer-right {
+                min-width: 100%;
+            }
+            
+            .footer-text {
+                font-size: 0.8rem;
+            }
+            
+            .footer-right {
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.7rem;
+            }
+            
+            .page-footer {
+                padding: 15px 10px;
+            }
+            
+            .footer-left, .footer-right {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .footer-icon {
+                margin-bottom: 5px;
+                margin-top: 0;
+            }
+            
+            .footer-mini-logo {
+                margin-bottom: 5px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .section-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .soldier-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header class="nav-header">
+        <div class="nav-container">
+            <div class="nav-star">★</div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Главная страница</a>
+                <a href="methodics/charter.html" class="nav-link">УСТАВ ВС СССР</a>
+                <a href="methodics/general.html" class="nav-link">УСТАВ ГКС</a>
+                <a href="methodics/drv.html" class="nav-link">УПК ДРВ</a>
+                <a href="methodics/drv.html" class="nav-link">Уголовный Кодекс ДРВ</a>
+                <a href="methodics/koap.html" class="nav-link">КоАП ДРВ</a>
+                <a href="history.html" class="nav-link">История подразделения</a>
+                <a href="charter.html" class="nav-link">Структура командования</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Заголовок страницы -->
+        <div class="page-header">
+            <h1 class="page-title">ИСТОРИЯ 8-Й КОМЕНДАНТСКОЙ РОТЫ</h1>
+            <div class="page-subtitle">Хроника подразделения, его формирования и боевого пути</div>
+        </div>
+        
+        <!-- Формирование и назначение -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❶</div>
+                <h2 class="section-title">Формирование и назначение</h2>
+            </div>
+            
+            <p>8-я комендантская рота сформирована <strong>15 марта 1969 года</strong> в провинции <strong>Кьен-Зянг</strong>. Подразделение было создано для обеспечения безопасности стратегически важных островов <strong>Дат</strong> и <strong>Чой</strong> — объектов снабжения и связи, критически необходимых для поддержания операций на юге страны.</p>
+            
+            <p>С момента формирования роте были поручены следующие задачи:</p>
+            <ul class="duties-list">
+                <li>обеспечение комендантского режима на гарнизонах и прилегающих территориях;</li>
+                <li>охрана складов, пунктов связи;</li>
+                <li>сопровождение и защита военных грузов;</li>
+                <li>выявление и пресечение разведывательно-диверсионной деятельности противника;</li>
+                <li>охрана линий коммуникаций и объектов логистики.</li>
+            </ul>
+        </div>
+        
+        <!-- Организационная структура -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❷</div>
+                <h2 class="section-title">Организационная структура</h2>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <p><strong>Военный Комендант Гарнизона</strong> - <span style="color: #FFD700;">Майор Хорват Александр Владимирович</span></p>
+                <p><strong>Командир роты</strong> — <span style="color: #FFD700;">Капитан Менделеев Николай Иосифович</span></p>
+                <p><strong>Заместитель командира роты</strong> — <span style="color: #FFD700;">Старший Лейтенант Кузнецов Александр Васильевич</span></p>
+            </div>
+            
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Отдел/группа</th>
+                        <th>Основные функции</th>
+                        <th>Личный состав</th>
+                        <th>Командир</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Оперативно-боевая гр.</td>
+                        <td>гарнизонный контроль, патрули</td>
+                        <td style="text-align: center;">4</td>
+                        <td>Млейт Станкович Б.А</td>
+                    </tr>
+                    <tr>
+                        <td>Следственный отдел</td>
+                        <td>контрдиверсионная деятельность</td>
+                        <td style="text-align: center;">2</td>
+                        <td>Млейт Свистунов С.П</td>
+                    </tr>
+                    <tr>
+                        <td>Медицинское отделен.</td>
+                        <td>безопасность коммуникаций</td>
+                        <td style="text-align: center;">1</td>
+                        <td>Стр Сороков И.С</td>
+                    </tr>
+                    <tr>
+                        <td>УЦК</td>
+                        <td>обучение новоприбывших коменд.</td>
+                        <td style="text-align: center;">-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="margin-top: 20px; text-align: center; color: #C19A6B; font-weight: bold;">Общая численность: 14 военнослужащих</p>
+        </div>
+        
+        <!-- Зоны ответственности -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❸</div>
+                <h2 class="section-title">Зоны ответственности и объекты охраны</h2>
+            </div>
+            
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Объект</th>
+                        <th>Местоположение</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Воинская часть №20112</td>
+                        <td>О-ва Дат и Чой</td>
+                        <td>Охрана и поддержка дисциплины</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Оперативная деятельность -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❹</div>
+                <h2 class="section-title">Оперативная деятельность и эпизоды службы</h2>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-event">
+                    <div class="event-year">1969 год</div>
+                    <div class="event-title">Операция «Чистый берег»</div>
+                    <p>Пресечена попытка организации разведсети противника на островах Дат и Чой. Задержана группа лиц, изъята радиопередающая аппаратура.</p>
+                </div>
+                
+                <div class="timeline-event">
+                    <div class="event-year">Август 1970 года</div>
+                    <div class="event-title">Операция «Банг-Там»</div>
+                    <p>Предотвращён подрыв топливых баков на нефтехранилище на территории Дат и Чой. Обнаружены и нейтрализованы скрытые боеприпасы, задержан диверсант.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Быт и особенности службы -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❺</div>
+                <h2 class="section-title">Быт и особенности службы</h2>
+            </div>
+            
+            <p>Служба велась в условиях тропического климата:</p>
+            <ul class="duties-list">
+                <li>круглосуточное патрулирование суши;</li>
+                <li>высокая влажность и сложные погодные условия;</li>
+                <li>постоянная угроза внезапных атак с ебланы.</li>
+            </ul>
+            
+            <p>Несмотря на трудности, рота поддерживала высокую боеготовность и дисциплину.</p>
+        </div>
+        
+        <!-- Вооружение и средства связи -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❻</div>
+                <h2 class="section-title">Вооружение и средства связи</h2>
+            </div>
+            
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Тип</th>
+                        <th>Модель</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Автоматы</td>
+                        <td>АКМ, Sten</td>
+                        <td style="text-align: center;">65</td>
+                    </tr>
+                    <tr>
+                        <td>Карабины</td>
+                        <td>СВТ-40</td>
+                        <td style="text-align: center;">15</td>
+                    </tr>
+                    <tr>
+                        <td>Пулемёты</td>
+                        <td>ПКМ</td>
+                        <td style="text-align: center;">10</td>
+                    </tr>
+                    <tr>
+                        <td>Радиостанции</td>
+                        <td>П-105, П-110</td>
+                        <td style="text-align: center;">2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Итоги деятельности -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❼</div>
+                <h2 class="section-title">Итоги деятельности (1967–1970 гг.)</h2>
+            </div>
+            
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Показатель</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Предотвращённых диверсий</td>
+                        <td style="text-align: center;">более 25</td>
+                    </tr>
+                    <tr>
+                        <td>Выявленных агентов</td>
+                        <td style="text-align: center;">около 40</td>
+                    </tr>
+                    <tr>
+                        <td>Сопровождённых транспортных операций</td>
+                        <td style="text-align: center;">более 400</td>
+                    </tr>
+                    <tr>
+                        <td>Отражённых атак на охраняемые объекты</td>
+                        <td style="text-align: center;">11</td>
+                    </tr>
+                    <tr>
+                        <td>Потери личного состава</td>
+                        <td style="text-align: center; color: #90EE90;">минимальные</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="margin-top: 20px; font-style: italic;">Подразделение зарекомендовало себя как надёжная структура, обеспечивающая устойчивое функционирование логистики и связи на островах.</p>
+        </div>
+        
+        <!-- Лучшие военнослужащие -->
+        <div class="history-section best-soldiers">
+            <div class="section-header">
+                <div class="section-icon">❽</div>
+                <h2 class="section-title">Лучшие военнослужащие</h2>
+            </div>
+            
+            <div class="soldier-card">
+                <div class="soldier-photo">
+                    <img src="assest/img/fa.jpg" alt="Сержант Михайлов Кирилл Дмитриевич">
+                </div>
+                <div class="soldier-info">
+                    <h3 class="soldier-name">
+                        Михайлов Кирилл Дмитриевич, под позывным
+                        <span class="callsign">"Жмых"</span>
+                    </h3>                    
+                    <div class="soldier-rank">Сержант, оперативник</div>
+                    <div class="soldier-achievements">
+                        <p>Проявил высокую инициативу и профессионализм, внёс значительный вклад в развитие подразделения.</p>
+                        <p>Разработал и внедрил систему электронной документации, что позволило существенно повысить эффективность работы и качество взаимодействия между службами.</p>
+                        <p>Участвовал в обновлении образцов приказов и нормативных документов, грамотно структурировал отчётность и процессы сдачи данных.</p>
+                        <p>Отличился ответственностью, вниманием к деталям и стремлением к постоянному совершенствованию служебной деятельности подразделения.</p>
+                        <p>Представлен к награде "За Трудовую Доблесть"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+                <!-- Лучшие военнослужащие -->
+                <div class="history-section best-soldiers">
+                    <div class="section-header">
+                    </div>
+            <div class="soldier-card">
+                <div class="soldier-photo">
+                    <img src="assest/img/mendeleev.png" alt="Сержант Михайлов Кирилл Дмитриевич">
+                </div>
+                <div class="soldier-info">
+                    <h3 class="soldier-name">
+                        Менделеев Николай Иосифович 
+                    </h3>                    
+                    <div class="soldier-rank">Капитан, Командир роты</div>
+                    <div class="soldier-achievements">
+                        <p>Отличился при командовании операции, проявил отвагу во время выполнения операции. Под его руководством 8-я комендантская рота успешно выполнила все поставленные задачи по охране стратегически важных объектов на островах Дат и Чой.</p>
+                        <p>Лично руководил операциями «Чистый берег» и «Банг-Там», в результате которых были предотвращены диверсии противника и задержаны члены разведсети.</p>
+                        <p>Награждён орденом Красной Звезды за образцовое выполнение воинского долга и проявленное мужество в боевых условиях.</p>
+                    </div>
+                </div>
+            </div>
+
+
+        <!-- Современное состояние -->
+        <div class="history-section">
+            <div class="section-header">
+                <div class="section-icon">❾</div>
+                <h2 class="section-title">Современное состояние</h2>
+            </div>
+            
+            <p>После завершения боевых действий рота была расформирована, а личный состав распределён по другим частям. Материалы о подразделении хранятся в архиве как пример успешной защиты изолированных объектов в условиях затяжного конфликта.</p>
+        </div>
+        
+        <!-- Финальная заметка -->
+        <div class="final-note">
+            <h3 style="color: #FFD700; text-align: center; margin-top: 0;">Полное условное наименование</h3>
+            <p style="text-align: center; font-size: 1.2rem; font-style: italic; color: #C19A6B;">
+                8-я комендантская рота военно-полевой службы вооружённых сил Союз Советских Социалистических Республик
+            </p>
+        </div>
+    </main>
+
+    <!-- Кнопка "Наверх" -->
+    <a href="#" class="scroll-top" id="scrollTopBtn" title="Наверх">↑</a>
+
+    <footer class="page-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-icon">ℹ</div>
+                <div class="footer-text">
+                    Данный сайт является учебным для всех военнослужащих 8-ой комендантской роты<br>
+                    На данный момент информация на сайте - актуальна<br>
+                    Разработан специально для военнослужащих 8-ой комендантской роты.
+                </div>
+            </div>
+        
+            <div class="footer-right">
+                <img src="./mst.png" class="footer-mini-logo" alt="MST">
+                <div>
+                    Представленные уставы не являются реальными нормативными актами и не имеют юридической силы. Это внутриигровой контент проекта "MST | Вьетнам".
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            
+            // Показ/скрытие кнопки "Наверх"
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+            
+            // Плавная прокрутка наверх
+            scrollTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Плавная прокрутка к разделам
+            document.querySelectorAll('.section-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    const section = this.closest('.history-section');
+                    section.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
